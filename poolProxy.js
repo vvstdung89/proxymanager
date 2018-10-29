@@ -104,13 +104,15 @@ class PoolProxy {
   }
 
   async createNewProxy(proxyStr) {
+    if (!proxyStr) throw new Error("proxy string empty")
     if (this.proxyList[proxyStr]) return this.proxyList[proxyStr]
 
-    let nextPort = await this._getAvailablePort();
+    
     var proxyInfo = proxyStr.split(":");
     if (!proxyInfo[0]) throw new Error("proxy string not valid")
     if (!proxyInfo[1] || isNaN(proxyInfo[1])) throw new Error("proxy string not valid")
 
+    let nextPort = await this._getAvailablePort();
     var proxy = new Proxy(
       "0.0.0.0",
       nextPort,

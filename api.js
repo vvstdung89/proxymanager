@@ -8,12 +8,12 @@ async function add(req, res) {
       if (!newProxy) throw new Error("Cannot create proxy")
       res.end();
     } catch (err) {
-        console.log(err)
+      console.log("Cannot create proxy")
       res.status(500);
-      res.end();
+      res.end(err.message);
     }
   } else {
-      console.log("no proxy string")
+    console.log("no proxy string")
     res.status(500);
     res.end();
   }

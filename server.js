@@ -1,8 +1,8 @@
 var express    = require('express');        
 var app        = express();                 
-
 var http = require('http');
 var router = express.Router(); 
+const poolProxy = require("./poolProxy")
 app.use("/", router);
 
 router.get("/proxy/add", require("./api").add)
@@ -27,5 +27,23 @@ function createServerHTTP(port){
 }
 
 createServerHTTP((16000));
+
+//read file
+const fs = require("fs")
+const path = require("path")
+const proxyFile = path.join(__dirname, "files","proxy.txt")
+console.log(proxyFile)
+if (fs.existsSync(proxyFile)){
+	let content = fs.readFileSync(proxyFile).toString()
+	for (let line of content.split("\n")){
+		try {
+			poolProxy.createNewProxy(line.trim())
+		} catch(err){
+			console.log(err)
+		}
+	}
+}
+
+
 
 
